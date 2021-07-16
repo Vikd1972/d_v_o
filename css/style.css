@@ -1,0 +1,101 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  
+}
+
+li {
+  float: left;
+  padding: 25px;
+}
+
+li a {
+  display: inline;
+  color: black;
+  text-decoration: none;
+}
+
+.main-bgc {
+  background-color: #EEEFF1;
+}
+
+.main {
+  background-color: #EEEFF1;
+  width: 1150px;
+  height: auto;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.main__head {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.main__head-logo {
+  position: absolute;
+  left: 15px;
+  top: 20px;
+  font-family: Revalia, sans-serif;
+  font-size: 48px;
+  color: #34547A;
+}
+
+.main__head-links {
+  position: absolute;
+  left: 500px;
+  top: 72px;
+  list-style-type: none;
+}
+
+.main__head-links a:hover {
+    color: #34547A;
+}
+
+.main__imgbody {
+  position: absolute;
+  left: 102px;
+  top: 200px;
+}
+
+.main__img {
+  position: absolute;
+  top: 75px;
+}
+
+.main__body {
+  position: relative;
+  left: 489px;
+}
+
+.main__body-heading {
+    position: absolute;
+    width: 540px;
+    height: 45px;
+}
+
+
+.main__body-description {
+    position: absolute;
+    top: 150px;
+    width: 540px;
+    height: 67px;
+}
+
+.main__body-mailto {
+    position: absolute;
+    margin-top: 277px;
+    width: 225px;
+    height: 65px;
+    background-color: #34547A;
+    text-align: center;
+    line-height: 65px;
+}
