@@ -6,6 +6,7 @@
 body {
     font-family: Roboto, sans-serif;
     font-size: 16px;
+    margin: 0;
 }
 
 .main {
@@ -72,13 +73,12 @@ body {
 }
 
 .main__title {
+    margin-bottom: 60px;
     font-size: 48px;
     width: 541px;
     height: 46px;
-    margin-bottom: 60px;
     font-weight: 500;
 }
-
 
 .description {
     width: 540px;
@@ -101,6 +101,8 @@ body {
 .main__button {
     line-height: 65px;
     width: 225px;
+    max-width: 80%;
+    /*min-width: 30%;*/
     height: 65px;
     margin-bottom: 146px;
 }
@@ -189,6 +191,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-top: 102px;
+    margin-bottom: 100px;
 } 
 
 .skills__column {
@@ -213,24 +216,21 @@ body {
     margin-bottom: 20px; 
     color: #727272;
 }
-/*для наложения двух рисунков друг на друга*/
 
 .skills__bar {
-    position: relative;
     width: 445px;
     height: 4px;
+    background-color: #727272;
     margin-bottom: 29px;
 }
 
-.skills__bar1 {
-    position: absolute;
+.skills__bar-in {
+    width: 75%;
+    height: 4px;
+    background-color: #217f9c;
 }
 
-.skills__bar2 {
-    position: absolute;
-}
-
-.skills__foto img {
+.skills__foto {
     width: 555px;
 }
 
@@ -425,83 +425,115 @@ body {
 
 @media screen and (max-width: 1280px) {
     .container {
-        width: 339px;
+        align-items: center;
+        width: 100%;
+    }
+    .main {
+        display: flex;
+        flex-direction: column;
         align-items: center;
     }
     .main__logo {
         margin-bottom: 50px;
+        margin-left: 12px;
     }
     .main__links {
         display: none;
     }
     .main__imgbody {
-    flex-direction: column;
-    justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        max-width: 100%;
     }
+  
+    .main__body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 70%;
+    }
+
     .main__img {
         margin: 0 0 51px 0;
     }
+    .main__img img {
+        max-width: 100%; 
+    }    
     .main__title {
         font-size: 36px;
         text-align: center;
         margin-bottom: 44px;
-        width: 322px;
+        max-width: 100%;
+        height: auto;
     }
     .description {
-        width: 322px;
-        height: 98px;
+        height: auto;
         text-align: center;
+        padding: 0 15px;
+        }
+    .main__description {
+        max-width: 100%;
+        margin-bottom: 44px;
     }
     .main__button {
-        margin: 0 auto 95px auto;
+        margin-bottom: 95px;
     }
     .about__title {
         margin-top: 91px;
         margin-bottom: 42px;
+        width: 100%;
     }
     .about__description {
         margin-bottom: 82px;
+        max-width: 100%;
     }
     .projects__items {
-        padding: 30px 0;
+        padding: 30px 15px;
+        justify-content: center;
     }
     .projects__item {
         margin: 45px 0;
     }
     .skills__field {
         flex-direction: column-reverse;
+        align-items: center;
     }
     .skills__column {
         width: 100%;
+        padding: 0 15px;
     }
     .skills__foto {
-        margin-bottom: 98px;
+        margin-bottom: 60px;
+        width: 100%;
+        padding: 0 10px;
     }
     .skills__title  {
         margin-bottom: 42px;
+        width: 100%;
+        height: auto;
     }
     .skills__name {
         margin-bottom: 20px;
     }
-    .skills__bar1 {
-        width: 339px;
-    }
-    .skills__bar2 {
-        width: 266px;
+    .skills__bar {
+        width: 100%;
     }
     .processes__title {
         margin-top: 93px;
         margin-bottom: 34px;
+        width: 100%;
+        height: auto;
     }
     .processes__description {
         margin-bottom: 57px;
+        max-width: 100%;
     }
     .processes__video {
         width: 100%;
         height: auto;
     }
     .works {
-        width: 339px;
+        width: 100%;
         margin: 34px auto;
     }
     .works__example {
@@ -511,27 +543,33 @@ body {
     .contacts__title {
         margin-top: 91px;
         margin-bottom: 34px;
+        width: 100%;
+        height: auto;
     }
     .contacts__description {
         margin-bottom: 48px;
+        max-width: 100%;
     }
     .contacts__form-fields {
         flex-direction: column;
         align-items: center;
     }
     .contacts__form-name {
-        width: 342px;
+        width: 100%;
         margin-bottom: 22px;
     }
     .contacts__form-email {
-        width: 342px;
+        width: 100%;
         margin-bottom: 22px;
     }
     .contacts__form-message textarea {
-        width: 342px;
+        width: 100%;
     }
     .contacts__form-message {
         margin-bottom: 48px;
+    }
+    .contacts__button {
+        width: 100%;
     }
     .footer__sign {
         flex-direction: column;
