@@ -15,6 +15,7 @@ body {
 }
 
 .container {
+    /*max-width: 1150px;*/
     width: 1150px;
     margin: 0 auto;
 }
@@ -482,6 +483,7 @@ body {
     .main__button {
         margin-bottom: 95px;
         width: 225px;
+        
     }
     .about__title {
         margin-top: 91px;
@@ -592,6 +594,9 @@ body {
         margin-bottom: 48px;
         line-height: 124%;
     }
+    .contacts__form {
+        width: 100%;
+    }
     .contacts__form-form {
         width: 100%;
         padding: 0 17px;
@@ -619,7 +624,8 @@ body {
         width: 100%;
     }
     .contacts__button {
-        width: 190px;
+        width: auto;
+        max-width: 190px;
         margin-bottom: 100px;
     }
     .footer__sign {
