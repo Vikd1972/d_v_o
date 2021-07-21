@@ -15,7 +15,7 @@ body {
 }
 
 .container {
-    max-width: 1150px;
+    width: 1150px;
     margin: 0 auto;
 }
 
@@ -65,7 +65,7 @@ body {
 .main__img {
     margin-top: 21px;
     margin-left: 112px;
-    max-width: 357px;
+    width: 357px;
 }
 
 .main__body {
@@ -103,7 +103,6 @@ body {
     line-height: 65px;
     width: 225px;
     max-width: 80%;
-    /*min-width: 30%;*/
     height: 65px;
     margin-bottom: 146px;
 }
@@ -220,6 +219,7 @@ body {
 
 .skills__bar {
     width: 445px;
+
     height: 4px;
     background-color: #727272;
     margin-bottom: 29px;
@@ -446,27 +446,27 @@ body {
     .main__imgbody {
         flex-direction: column;
         align-items: center;
-        max-width: 100%;
+        width: 100%;
     }
-  
+    .main__img {
+        margin: 0 0 51px 0;
+        width: 100%;
+    
+    }
+    .main__img img {
+        width: 100%; 
+        padding: 0 38px;
+    }    
     .main__body {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 70%;
     }
-
-    .main__img {
-        margin: 0 38px 51px 38px;
-    }
-    .main__img img {
-        max-width: 100%; 
-    }    
     .main__title {
         font-size: 36px;
         text-align: center;
         margin-bottom: 44px;
-        max-width: 302px;
+        width: 100%;
         height: auto;
     }
     .description {
@@ -474,34 +474,38 @@ body {
         text-align: center;
         }
     .main__description {
-        max-width: 100%;
-        min-width: 323px;
+        width: 100%;
         margin-bottom: 44px;
         line-height: 124%;
+        padding: 0 26px;
     }
     .main__button {
         margin-bottom: 95px;
-        min-width: 225px;
+        width: 225px;
     }
     .about__title {
         margin-top: 91px;
         margin-bottom: 42px;
-        width: 126px;
+        width: 100%;
+        height: auto;
         height: 38px;
     }
     .about__description {
-        max-width: 100%;
-        min-width: 323px;
+        width: 100%;
         margin-bottom: 82px;
         line-height: 124%;
         padding: 0 26px;
     }
     .projects__items {
+        display: flex;
+        flex-direction: row;
         justify-content: space-between;
         padding: 30px 0;
     }
     .projects__item {
         margin: 45px 18px;
+    
+    
     }
     .skills__field {
         flex-direction: column-reverse;
@@ -513,7 +517,6 @@ body {
         padding: 0 15px;
         display: flex;
         flex-direction: column;
-        align-items: center;
         margin-bottom: 74px;
     }
     .skills__foto {
@@ -524,31 +527,40 @@ body {
     }
     .skills__title  {
         margin-bottom: 42px;
-        max-width: 189px;
+        width: 100%;
+        text-align: center;
         height: auto;
     }
     .skills_item {
-        max-width: 339px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    
     }
     .skills__name {
         margin-bottom: 19px;
+        width: 100%;
+    
+    }
+    .skills__name div {
+        width: 100%;
+       
     }
     .skills__bar {
-        max-width: 339px;
+        width: 100%;
         margin-bottom: 29px;
     }
     .processes__title {
         margin-top: 93px;
         margin-bottom: 34px;
-        width: 220px;
+        width: 100%;
         height: auto;
     }
     .processes__description {
-        margin-bottom: 57px;
-        max-width: 100%;
-        min-width: 323px;
-        line-height: 124%;
+        width: 100%;
         padding: 0 26px;
+        margin-bottom: 57px;
+        line-height: 124%;
     }
     .processes__video {
         width: 100%;
@@ -564,32 +576,38 @@ body {
         width: 50%;
         height: auto;
     }
+    .contacts {
+        align-items: stretch;
+    }
     .contacts__title {
         margin-top: 91px;
         margin-bottom: 34px;
-        width: 260px;
+        width: 100%;
+        padding: 0 26px;
         height: auto;
     }
     .contacts__description {
-        margin-bottom: 48px;
-        max-width: 100%;
-        min-width: 323px;
-        line-height: 124%;
+        width: 100%;
         padding: 0 26px;
+        margin-bottom: 48px;
+        line-height: 124%;
+    }
+    .contacts__form-form {
+        width: 100%;
+        padding: 0 17px;
     }
     .contacts__form-fields {
         flex-direction: column;
-        align-items: center;
     }
     .contacts__form-fields input {
         font-size: 14px;
     }
     .contacts__form-name {
-        min-width: 342px;
+        width: 100%;
         margin-bottom: 22px;
     }
     .contacts__form-email {
-        min-width: 342px;
+        width: 100%;
         margin-bottom: 21px;
     }
     .contacts__form-message textarea {
@@ -598,10 +616,10 @@ body {
     }
     .contacts__form-message {
         margin-bottom: 48px;
-    
+        width: 100%;
     }
     .contacts__button {
-        max-width: 190px;
+        width: 190px;
         margin-bottom: 100px;
     }
     .footer__sign {
