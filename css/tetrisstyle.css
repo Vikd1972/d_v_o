@@ -1,0 +1,96 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #BBBBBB;
+    font-size: 25px;
+    font-weight: bold;
+
+}
+#game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.tetris {
+    color: #FFFFFF;
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+.field {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.fieldL{
+    width: auto;
+    height: auto;
+    margin-right: 30px;
+    
+}
+#fieldGame {
+    margin-right: 20px;
+    padding: 5px;
+    background-color: rgb(224, 95, 20);
+    border-radius: 7px;
+}
+.cage {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    border-radius: 4px;
+    background-color: #BBBBBB;
+}
+.fieldR {
+    width: 332px;
+    height: 652px;
+    border: 7px;
+    border-color: rgb(224, 95, 20);
+    border-radius: 7px;
+    border-style: solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}   
+.rules {
+    text-align: center;
+    margin-bottom: 50px;
+}
+.rec {
+    margin-bottom: 20px;
+}
+#rec {
+    font-size: 52px;
+    color: #FF0000;
+    margin-bottom: 20px;
+}
+
+.numElem {
+    margin-bottom: 20px;
+}
+#numElem {
+    font-size: 52px;
+    color: #FF0000;
+    margin-bottom: 20px;
+}
+
+.speed {
+    margin-bottom: 20px;
+}
+#speed {
+    font-size: 52px;
+    color: #FF0000;
+    margin-bottom: 20px;
+}
+.startGame {
+    margin-top: 20px;
+    width: 332px;
+    height: 60px;
+    color: #FFFFFF;
+    background-color: #555555;
+    text-align: center;
+    padding: 15px;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/tetrisstyle.css" />
+  </head>
+
+  <body>
+    <div id="game">
+      <div class="tetris">T E T R I S</div>
+      <div class="field">
+        <div class="fieldL">
+          <table id="fieldGame"></table>
+        </div>
+        <div class="fieldR">
+          <div class="rules">
+            <div style="margin-bottom: 20px">Правила игры</div>
+            <div>&uarr; - поворот фигуры</div>
+            <div>&larr; - сдвиг влево</div>
+            <div>&rarr; - сдвиг вправо</div>
+            <div>&darr; - уронить фигуру</div>
+            <div>'Esc' - прекратить игру</div>
+          </div>
+          <div class="points">
+            <div class="rec">Ваш рекорд:</div>
+            <div id="rec"></div>
+            <div class="numElem">Блок в игре</div>
+            <div id="numElem"></div>
+            <div class="speed">текущая скорость</div>
+            <div id="speed"></div>
+          </div>
+        </div>
+      </div>
+      <div class="startGame">Начать новую игру</div>
+    </div>
+
+    <script>
+      let rec = 0; //рекорд игры
+      document.getElementById("rec").innerHTML = rec;
+      let numElem = 0; //номер элемента
+      document.getElementById("numElem").innerHTML = numElem;
+      let speed = 10; //скорость
+      document.getElementById("speed").innerHTML = speed;
+      //построение поля --------------------------------------------
+      for (let y = 1; y <= 20; y++) {
+        let row = "<tr>";
+        for (let i = 1; i <= 10; i++) {
+          row += '<td class="cage">';
+        }
+        row += "</tr>";
+        fieldGame.innerHTML += row;
+      }
+    </script>
+  </body>
+</html>
