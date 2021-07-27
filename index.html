@@ -32,16 +32,20 @@
           </div>
         </div>
       </div>
-      <div class="startGame" onclick="start();">Начать новую игру</div>
-      <div id="endGame">Игра закончена</div>
+      <div class="startGame" onclick="preStart();">Начать новую игру</div>
+      <div id="endGame">
+        Игра закончена
+        <div>Ваш рекорд:</div>
+        <div id="rec1"></div>
+      </div>
     </div>
     <script>
+      "use strict";
       let T = [
-        [0, 1, 0],
-        [1, 1, 1],
-        [0, 0, 0],
+        [2, 1, 1],
+        [1, 1, 2],
+        [2, 2, 2],
       ];
-
       let rec = 0; //рекорд игры
       document.getElementById("rec").innerHTML = rec;
       let numElem = 0; //номер элемента
@@ -51,14 +55,14 @@
       let fieldGame = document.getElementById("fieldGame");
       let posX = 4; //начальное положение фигуры
       let posY = 0;
-      let fieldClone = []; //создание массива для вычисления расположения фигур
+      let stop = false; //признак остановки игры
+      let fieldClone = [];
       field();
-
-      //начало игры ---------------------------------------------------
-      function start() {
-        //let posX = 4; //начальное положение фигуры
-        //let posY = 0;
-        //очистка поля ----------------------------------------------
+      clear();
+      // предварительная очистка поля -------------------------------
+      function clear() {
+        posX = 4; //начальное положение фигуры
+        posY = 0;
         for (let i = 0; i <= 9; i++) {
           fieldClone[i] = [];
           for (let j = 0; j <= 19; j++) {
@@ -66,44 +70,73 @@
             fieldGame.rows[j].cells[i].style.backgroundColor = "#BBBBBB";
           }
         }
+      }
+      function preStart() {
+        numElem = 0;
+        document.getElementById("numElem").innerHTML = numElem;
+        stop = false;
+        start();
+      }
+      //начало игры -------------------------------------------------
+      function start() {
+        if (stop) return;
         //установка фигуры ------------------------------------------
-        for (let i = 0; i <= 2; i++) {
-          for (let j = 0; j <= 2; j++) {
-            if (T[j][i] == 1) {
-              fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
-                "#FF0000";
+        for (let i = 0; i < T.length; i++) {
+          console.log(T[i]);
+          for (let j = 0; j < T[1].length; j++) {
+            console.log("i-" + i + " j-" + j);
+            if (T[i][j] == 1 && fieldClone[i + posX][j + posY] == 1) {
+              numElem -= 1;
+              endGames(endEnd);
+            }
+            if (T[i][j] == 1) {
+              fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#FF0000";
             }
           }
         }
         //спуск фигуры ----------------------------------------------
-        fieldClone[5][15] = 1;
-        function lowering(down) {
+        function lowSpeedDown(down) {
+          if (stop) return;
           setTimeout(down, 300);
         }
         function down() {
-          if (posY < 18) {
-            posY += 1;
-            console.log(posY);
-            for (let j = 0; j <= 2; j++) {
-              for (let i = 0; i <= 2; i++) {
-                console.log("i- " + i);
-                console.log("j- " + j);
-                if (T[i][j] == 1 && fieldClone[i + posX][j + posY] == 1) {
-                  return;
+          if (stop) return;
+          // let endField = posY < 25;
+          posY += 1;
+          console.log(posY);
+          for (let i= 0; i < T.length; i++) {
+            for (let j = 0; j < T[i].length; j++) {
+              let crash = T[i][j] == 1 && fieldClone[i + posX][j + posY] !== 0;
+              if (crash) {
+                for (let i = 0; i < T.length; i++) {
+                  for (let j = 0; j < T[i].length; j++) {
+                    if (T[i][j] == 1) fieldClone[posX + i][posY - 1 + j] = 1;
+                  }
                 }
-
-                //console.log('j-'+j);
-                //console.log('posX-'+posX);
-                //console.log('posY-'+posY);
+                console.log(fieldClone[9]);
+                console.log(fieldClone[8]);
+                console.log(fieldClone[7]);
+                console.log(fieldClone[6]);
+                console.log(fieldClone[5]);
+                console.log(fieldClone[4]);
+                console.log(fieldClone[3]);
+                console.log(fieldClone[2]);
+                console.log(fieldClone[1]);
+                console.log(fieldClone[0]);
+                posX = 4;
+                posY = -1;
+                numElem += 1;
+                document.getElementById("numElem").innerHTML = numElem;
+                start();
+                return false;
               }
             }
           }
-          updating(posY);
-          lowering(down);
+          updating(posX, posY);
+          lowSpeedDown(down);
         }
-        lowering(down);
+        lowSpeedDown(down);
       }
-
       //построение поля -----------------------------------------------
       function field() {
         for (let y = 1; y <= 20; y++) {
@@ -120,49 +153,130 @@
         if (event.keyCode == 37) posLeft(posY); //сдвиг влево
         if (event.keyCode == 39) posRight(posY); //сдвиг вправо
         if (event.keyCode == 38) posTurn(); //поворот фигуры
-        if (event.keyCode == 40) posDown(); //падение фигуры
-        if (event.keyCode == 27) endGames(); //конец игры
+        if (event.keyCode == 40) highSpeedDown(speedDown); //падение фигуры
+        if (event.keyCode == 27) endGames(endEnd); //конец игры
       });
-      function endGames() {
+      function endGames(endEnd) {
         endG = document.getElementById("endGame");
+        //endG.style.zIndex = "2";
+        if (rec < numElem) rec = numElem;
+        document.getElementById("rec1").innerHTML = rec;
+        clear();
+        stop = true;
         endG.style.visibility = "visible";
-        endG.style.zIndex = "2";
+        setTimeout(endEnd, 3000);
+      }
+      function endEnd() {
+        if (rec < numElem) rec = numElem;
+        document.getElementById("rec").innerHTML = rec;
+        endG.style.visibility = "hidden";
+        numElem = 0;
+        document.getElementById("numElem").innerHTML = numElem;
+        for (let i = 0; i <= 9; i++) {
+          fieldClone[i] = [];
+          for (let j = 0; j <= 19; j++) {
+            fieldClone[i][j] = 0;
+            fieldGame.rows[j].cells[i].style.backgroundColor = "#BBBBBB";
+          }
+        }
       }
       function posLeft(posY) {
-        if (posX > 0) posX -= 1;
-        updating(posY);
+        let leftX;
+        label: for (let j = 0; j < T[1].length; j++) {
+          for (let i = 0; i < T.length; i++) {
+            if (T[i][j] == 1) {
+              leftX = i;
+              continue label;
+            }
+          }
+        }
+        if (posX + leftX > 0) posX -= 1;
+        updating(posX, posY);
       }
       function posRight(posY) {
-        if (posX < fieldClone.length - T.length) posX += 1;
-        updating(posY);
+        let rightX;
+        label: for (let i = 0; i < T.length; i++) {
+          for (let j = T.length - 1; j >= 0; j--) {
+            if (T[i][j] == 1) {
+              rightX = i;
+              continue label;
+            }
+          }
+        }
+        if (posX < fieldClone.length - rightX - 1) posX += 1;
+        updating(posX, posY);
+      }
+      function highSpeedDown(speedDown) {
+        if (stop) return;
+        setTimeout(speedDown, 0);
+      }
+      function speedDown() {
+        if (stop) return;
+             posY += 1;
+        console.log(posY);
+        for (let i = 0; i < T.length; i++) {
+          for (let j = 0; j < T[i].length; j++) {
+            let crash = T[i][j] == 1 && fieldClone[i + posX][j + posY] !== 0;
+            if (crash) {
+              for (let i = 0; i < T.length; i++) {
+                for (let j = 0; j < T[i].length; j++) {
+                  if (T[i][j] == 1) fieldClone[posX + i][posY - 1 + j] = 1;
+                }
+              }
+              console.log(fieldClone[9]);
+              console.log(fieldClone[8]);
+              console.log(fieldClone[7]);
+              console.log(fieldClone[6]);
+              console.log(fieldClone[5]);
+              console.log(fieldClone[4]);
+              console.log(fieldClone[3]);
+              console.log(fieldClone[2]);
+              console.log(fieldClone[1]);
+              console.log(fieldClone[0]);
+              posX = 4;
+              posY = -1;
+              numElem += 1;
+              document.getElementById("numElem").innerHTML = numElem;
+              start();
+              return false;
+            }
+          }
+        }
+        updating(posX, posY);
+        highSpeedDown(speedDown);
       }
       //обновление поля -----------------------------------------------
-      function updating(posY) {
+      function updating(posX, posY) {
         for (let i = 0; i <= 9; i++) {
-          for (let j = 0; j <= 19; j++) {
+          for (let j = 0; j < 19; j++) {
             if (fieldClone[i][j] !== 1) {
               fieldGame.rows[j].cells[i].style.backgroundColor = "#BBBBBB";
             }
           }
         }
-        for (let i = 0; i <= 2; i++) {
-          for (let j = 0; j <= 2; j++) {
-            if (T[j][i] == 1) {
+        for (let i = 0; i <= 9; i++) {
+          for (let j = 0; j < 19; j++) {
+            if (fieldClone[i][j] == 1) {
+              fieldGame.rows[j].cells[i].style.backgroundColor = "#FF0000";
+            }
+          }
+        }
+        for (let j = 0; j < T[1].length; j++) {
+          for (let i = 0; i < T.length; i++) {
+            if (T[i][j] == 1) {
               fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
                 "#FF0000";
             }
           }
         }
-        //console.log(fieldClone[0]);
-        //console.log(fieldClone[1]);
-        //console.log(fieldClone[2]);
-        //console.log(fieldClone[3]);
-        //console.log(fieldClone[4]);
-        //console.log(fieldClone[5]);
-        //console.log(fieldClone[6]);
-        //console.log(fieldClone[7]);
-        //console.log(fieldClone[8]);
-        //console.log(fieldClone[9]);
+        //for (let j = 0; j <= 2; j++) {
+        //  for (let i = 0; i <= 2; i++) {
+        //    if (T[i][j] == 2) {
+        //      fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
+        //        "#00FF00";
+        //    }
+        //  }
+        //}
       }
     </script>
   </body>

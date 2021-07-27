@@ -65,6 +65,13 @@ body {
     font-size: 52px;
     color: #FF0000;
     margin-bottom: 20px;
+    z-index: 500;
+}
+#rec1 {
+    font-size: 80px;
+    color: #FF0000;
+    margin-bottom: 20px;
+    z-index: 500;
 }
 
 .numElem {
@@ -97,15 +104,14 @@ body {
 #endGame {
     position: fixed;
     width: 680px;
-    height: 150px;
-    top 100px;
-    font-size: 85px;
+    height: auto;
+    font-size: 70px;
     text-align: center;
     padding-top: 20px;
     color: #FF0000;
     background-color: #BBBBBB;
     border: 3px solid #FF0000;
     border-radius: 10px;
-    margin-top: 300px;
+    margin-top: 250px;
     visibility: hidden;
 }
