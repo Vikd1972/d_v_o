@@ -56,6 +56,7 @@
       let posX = 4; //начальное положение фигуры
       let posY = 0;
       let stop = false; //признак остановки игры
+      let endG;
       let fieldClone = [];
       field();
       clear();
@@ -244,6 +245,17 @@
         }
         updating(posX, posY);
         highSpeedDown(speedDown);
+      }
+      function posTurn(){
+        let turnT = [];
+      for (let i = 0; i < T.length; i++) {
+        turnT[i] = [];
+        for (let j = 0; j < T[i].length; j++) {
+          turnT[i][j] = T[j][T[i].length - 1 - i];
+        }
+      }
+      T = turnT;
+      return T;
       }
       //обновление поля -----------------------------------------------
       function updating(posX, posY) {
