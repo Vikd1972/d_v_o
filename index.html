@@ -41,12 +41,45 @@
     </div>
     <script>
       "use strict";
-      let T = [
+
+      let I = [
         [0, 0, 0, 0],
         [1, 1, 1, 1],
         [0, 0, 0, 0],
         [0, 0, 0, 0],
       ];
+      let J = [
+        [1, 0, 0],
+        [1, 1, 1],
+        [0, 0, 0],
+      ];
+      let L = [
+        [0, 0, 1],
+        [1, 1, 1],
+        [0, 0, 0],
+      ];
+      let O = [
+        [1, 1],
+        [1, 1],
+      ];
+      let S = [
+        [0, 1, 1],
+        [1, 1, 0],
+        [0, 0, 0],
+      ];
+      let Z = [
+        [1, 1, 0],
+        [0, 1, 1],
+        [0, 0, 0],
+      ];
+      let T = [
+        [0, 1, 0],
+        [1, 1, 1],
+        [0, 0, 0],
+      ];
+      let figures = [I, J, L, O, S, Z, T];
+      let randomF;
+      let figure;
       let rec = 0; //рекорд игры
       document.getElementById("rec").innerHTML = rec;
       let numElem = 0; //номер элемента
@@ -59,6 +92,7 @@
       let stop = false; //признак остановки игры
       let endG;
       let fieldClone = [];
+      //let randomF;
       field();
       clear();
 
@@ -84,13 +118,15 @@
       function start() {
         if (stop) return;
         //установка фигуры ------------------------------------------
-        for (let i = 0; i < T.length; i++) {
-          for (let j = 0; j < T[1].length; j++) {
-            if (T[i][j] == 1 && fieldClone[i + posX][j + posY] == 1) {
+        randomF = Math.floor(Math.random() * figures.length);
+        figure = figures[randomF];
+        for (let i = 0; i < figure.length; i++) {
+          for (let j = 0; j < figure[1].length; j++) {
+            if (figure[i][j] !== 0 && fieldClone[i + posX][j + posY] == 1) {
               numElem -= 1;
               endGames(endEnd);
             }
-            if (T[i][j] == 1) {
+            if (figure[i][j] !== 0) {
               fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#FF0000";
             }
           }
@@ -105,13 +141,13 @@
           if (stop) return;
           posY += 1;
           console.log(posY);
-          for (let i = 0; i < T.length; i++) {
-            for (let j = 0; j < T[i].length; j++) {
-              let crash = T[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0;
+          for (let i = 0; i < figure.length; i++) {
+            for (let j = 0; j < figure[i].length; j++) {
+              let crash = figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0;
               if (crash) {
-                for (let i = 0; i < T.length; i++) {
-                  for (let j = 0; j < T[i].length; j++) {
-                    if (T[i][j] == 1) fieldClone[posX + i][posY - 1 + j] = 1;
+                for (let i = 0; i < figure.length; i++) {
+                  for (let j = 0; j < figure[i].length; j++) {
+                    if (figure[i][j] !== 0) fieldClone[posX + i][posY - 1 + j] = 1;
                   }
                 }
                 deletedLine(fieldClone);
@@ -178,9 +214,9 @@
 
       function posLeft(posY) {
         let leftX;
-        label: for (let j = 0; j < T[1].length; j++) {
-          for (let i = 0; i < T.length; i++) {
-            if (T[i][j] == 1) {
+        label: for (let j = 0; j < figure[1].length; j++) {
+          for (let i = 0; i < figure.length; i++) {
+            if (figure[i][j] !== 0) {
               leftX = i;
               continue label;
             }
@@ -193,9 +229,9 @@
 
       function posRight(posY) {
         let rightX;
-        label: for (let i = 0; i < T.length; i++) {
-          for (let j = T.length - 1; j >= 0; j--) {
-            if (T[i][j] == 1) {
+        label: for (let i = 0; i < figure.length; i++) {
+          for (let j = figure.length - 1; j >= 0; j--) {
+            if (figure[i][j] !== 0) {
               rightX = i;
               continue label;
             }
@@ -215,13 +251,13 @@
         if (stop) return;
         posY += 1;
         console.log(posY);
-        for (let i = 0; i < T.length; i++) {
-          for (let j = 0; j < T[i].length; j++) {
-            let crash = T[i][j] == 1 && fieldClone[i + posX][j + posY] !== 0;
+        for (let i = 0; i < figure.length; i++) {
+          for (let j = 0; j < figure[i].length; j++) {
+            let crash = figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0;
             if (crash) {
-              for (let i = 0; i < T.length; i++) {
-                for (let j = 0; j < T[i].length; j++) {
-                  if (T[i][j] == 1) fieldClone[posX + i][posY - 1 + j] = 1;
+              for (let i = 0; i < figure.length; i++) {
+                for (let j = 0; j < figure[i].length; j++) {
+                  if (figure[i][j] !== 0) fieldClone[posX + i][posY - 1 + j] = 1;
                 }
               }
               deletedLine(fieldClone);
@@ -242,14 +278,14 @@
 
       function posTurn() {
         let turnT = [];
-        for (let i = 0; i < T.length; i++) {
+        for (let i = 0; i < figure.length; i++) {
           turnT[i] = [];
-          for (let j = 0; j < T[i].length; j++) {
-            turnT[i][j] = T[j][T[i].length - 1 - i];
+          for (let j = 0; j < figure[i].length; j++) {
+            turnT[i][j] = figure[j][figure[i].length - 1 - i];
           }
         }
-        T = turnT;
-        return T;
+        figure = turnT;
+        return figure;
       }
 
       function deletedLine(fieldClone) {
@@ -294,16 +330,15 @@
       }
 
       function drowing(posX, posY) {
-        for (let i = 0; i < T.length; i++) {
-          for (let j = 0; j < T[i].length; j++) {
-            if (T[i][j] == 1) {
+        for (let i = 0; i < figure.length; i++) {
+          for (let j = 0; j < figure[i].length; j++) {
+            if (figure[i][j] !== 0) {
               fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
                 "#FF0000";
             }
           }
         }
       }
-    
     </script>
   </body>
 </html>
