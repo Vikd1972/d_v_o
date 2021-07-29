@@ -49,32 +49,32 @@
         [0, 0, 0, 0],
       ];
       let J = [
-        [1, 0, 0],
-        [1, 1, 1],
+        [2, 0, 0],
+        [2, 2, 2],
         [0, 0, 0],
       ];
       let L = [
-        [0, 0, 1],
-        [1, 1, 1],
+        [0, 0, 3],
+        [3, 3, 3],
         [0, 0, 0],
       ];
       let O = [
-        [1, 1],
-        [1, 1],
+        [4, 4],
+        [4, 4],
       ];
       let S = [
-        [0, 1, 1],
-        [1, 1, 0],
+        [0, 5, 5],
+        [5, 5, 0],
         [0, 0, 0],
       ];
       let Z = [
-        [1, 1, 0],
-        [0, 1, 1],
+        [6, 6, 0],
+        [0, 6, 6],
         [0, 0, 0],
       ];
       let T = [
-        [0, 1, 0],
-        [1, 1, 1],
+        [0, 7, 0],
+        [7, 7, 7],
         [0, 0, 0],
       ];
       let figures = [I, J, L, O, S, Z, T];
@@ -126,8 +126,26 @@
               numElem -= 1;
               endGames(endEnd);
             }
-            if (figure[i][j] !== 0) {
+            if (figure[i][j] == 1) {
               fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#FF0000";
+            }
+            if (figure[i][j] == 2) {
+              fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#FF4500";
+            }
+            if (figure[i][j] == 3) {
+              fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#FFFF00";
+            }
+            if (figure[i][j] == 4) {
+              fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#00FF00";
+            }
+            if (figure[i][j] == 5) {
+              fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#00FFFF";
+            }
+            if (figure[i][j] == 6) {
+              fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#0000FF";
+            }
+            if (figure[i][j] == 7) {
+              fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#800080";
             }
           }
         }
@@ -143,11 +161,13 @@
           console.log(posY);
           for (let i = 0; i < figure.length; i++) {
             for (let j = 0; j < figure[i].length; j++) {
-              let crash = figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0;
+              let crash =
+                figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0;
               if (crash) {
                 for (let i = 0; i < figure.length; i++) {
                   for (let j = 0; j < figure[i].length; j++) {
-                    if (figure[i][j] !== 0) fieldClone[posX + i][posY - 1 + j] = 1;
+                    if (figure[i][j] !== 0)
+                      fieldClone[posX + i][posY - 1 + j] = figure[i][j];
                   }
                 }
                 deletedLine(fieldClone);
@@ -253,11 +273,13 @@
         console.log(posY);
         for (let i = 0; i < figure.length; i++) {
           for (let j = 0; j < figure[i].length; j++) {
-            let crash = figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0;
+            let crash =
+              figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0;
             if (crash) {
               for (let i = 0; i < figure.length; i++) {
                 for (let j = 0; j < figure[i].length; j++) {
-                  if (figure[i][j] !== 0) fieldClone[posX + i][posY - 1 + j] = 1;
+                  if (figure[i][j] !== 0)
+                    fieldClone[posX + i][posY - 1 + j] = figure[i][j];
                 }
               }
               deletedLine(fieldClone);
@@ -325,6 +347,24 @@
             if (fieldClone[i][j] == 1) {
               fieldGame.rows[j].cells[i].style.backgroundColor = "#FF0000";
             }
+            if (fieldClone[i][j] == 2) {
+              fieldGame.rows[j].cells[i].style.backgroundColor = "#FF4500";
+            }
+            if (fieldClone[i][j] == 3) {
+              fieldGame.rows[j].cells[i].style.backgroundColor = "#FFFF00";
+            }
+            if (fieldClone[i][j] == 4) {
+              fieldGame.rows[j].cells[i].style.backgroundColor = "#00FF00";
+            }
+            if (fieldClone[i][j] == 5) {
+              fieldGame.rows[j].cells[i].style.backgroundColor = "#00FFFF";
+            }
+            if (fieldClone[i][j] == 6) {
+              fieldGame.rows[j].cells[i].style.backgroundColor = "#0000FF";
+            }
+            if (fieldClone[i][j] == 7) {
+              fieldGame.rows[j].cells[i].style.backgroundColor = "#800080";
+            }
           }
         }
       }
@@ -332,9 +372,33 @@
       function drowing(posX, posY) {
         for (let i = 0; i < figure.length; i++) {
           for (let j = 0; j < figure[i].length; j++) {
-            if (figure[i][j] !== 0) {
+            if (figure[i][j] == 1) {
               fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
                 "#FF0000";
+            }
+            if (figure[i][j] == 2) {
+              fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
+                "#FF4500";
+            }
+            if (figure[i][j] == 3) {
+              fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
+                "#FFFF00";
+            }
+            if (figure[i][j] == 4) {
+              fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
+                "#00FF00";
+            }
+            if (figure[i][j] == 5) {
+              fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
+                "#00FFFF";
+            }
+            if (figure[i][j] == 6) {
+              fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
+                "#0000FF";
+            }
+            if (figure[i][j] == 7) {
+              fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
+                "#800080";
             }
           }
         }
