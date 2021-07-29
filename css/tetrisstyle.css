@@ -23,7 +23,7 @@ body {
     justify-content: center;
     align-items: center;
 }
-.fieldL{
+.fieldleft {
     width: auto;
     height: auto;
     margin-right: 30px;
@@ -42,7 +42,7 @@ body {
     border-radius: 4px;
     background-color: #BBBBBB;
 }
-.fieldR {
+.fieldright {
     width: 332px;
     height: 652px;
     border: 7px;
@@ -56,10 +56,10 @@ body {
 }   
 .rules {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 .rec {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 #rec {
     font-size: 52px;
@@ -74,8 +74,8 @@ body {
     z-index: 500;
 }
 
-.numElem {
-    margin-bottom: 20px;
+.numelem {
+    margin-bottom: 15px;
 }
 #numElem {
     font-size: 52px;
@@ -84,14 +84,14 @@ body {
 }
 
 .speed {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 #speed {
     font-size: 52px;
     color: #FF0000;
     margin-bottom: 20px;
 }
-.startGame {
+.startgame {
     margin-top: 20px;
     width: 332px;
     height: 60px;
@@ -113,5 +113,19 @@ body {
     border: 3px solid #FF0000;
     border-radius: 10px;
     margin-top: 250px;
+    visibility: hidden;
+}
+#pause {
+    position: fixed;
+    width: 300px;
+    height: auto;
+    font-size: 60px;
+    text-align: center;
+    padding-top: 20px;
+    color: #FF0000;
+    background-color: #BBBBBB;
+    border: 3px solid #FF0000;
+    border-radius: 10px;
+    margin-top: 50px;
     visibility: hidden;
 }

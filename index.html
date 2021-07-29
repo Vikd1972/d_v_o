@@ -10,10 +10,10 @@
     <div id="game">
       <div class="tetris">T E T R I S</div>
       <div class="field">
-        <div class="fieldL">
+        <div class="fieldleft">
           <table id="fieldGame"></table>
         </div>
-        <div class="fieldR">
+        <div class="fieldright">
           <div class="rules">
             <div style="margin-bottom: 20px">Правила игры</div>
             <div>&uarr; - поворот фигуры</div>
@@ -21,23 +21,25 @@
             <div>&rarr; - сдвиг вправо</div>
             <div>&darr; - уронить фигуру</div>
             <div>'Esc' - прекратить игру</div>
+            <div>'Spacebar' - пауза</div>
           </div>
           <div class="points">
             <div class="rec">Ваш рекорд:</div>
             <div id="rec"></div>
-            <div class="numElem">Блок в игре</div>
+            <div class="numelem">Блок в игре</div>
             <div id="numElem"></div>
             <div class="speed">текущая скорость</div>
             <div id="speed"></div>
           </div>
         </div>
       </div>
-      <div class="startGame" onclick="preStart();">Начать новую игру</div>
+      <div class="startgame" onclick="preStart();">Начать новую игру</div>
       <div id="endGame">
         Игра закончена
         <div>Ваш рекорд:</div>
         <div id="rec1"></div>
       </div>
+      <div id="pause">Пауза</div>
     </div>
     <script>
       "use strict";
@@ -78,8 +80,9 @@
         [0, 0, 0],
       ];
       let figures = [I, J, L, O, S, Z, T];
-      let randomF;
-      let figure;
+      let randomF; //случайный элемент из массива фигур
+      let figure; //текущая фигура
+      let startSpeed = 500; //начальная скорость
       let rec = 0; //рекорд игры
       document.getElementById("rec").innerHTML = rec;
       let numElem = 0; //номер элемента
@@ -87,18 +90,17 @@
       let speed = 10; //скорость
       document.getElementById("speed").innerHTML = speed;
       let fieldGame = document.getElementById("fieldGame");
-      let posX = 4; //начальное положение фигуры
-      let posY = 0;
+      let posX = 4; //начальное положение фигуры / сдвиг фигуры
+      let posY = 0; //начальное положение фигуры / сдвиг фигуры
       let stop = false; //признак остановки игры
-      let endG;
-      let fieldClone = [];
-      //let randomF;
+      let sleep = true; //пауза в игре
+      let endG; //заставка конца игры
+      let fieldClone = []; //массив поля игры
+      let ms; //длина паузы
       field();
       clear();
 
       function clear() {
-        posX = 4; //начальное положение фигуры
-        posY = 0;
         for (let i = 0; i <= 9; i++) {
           fieldClone[i] = [];
           for (let j = 0; j <= 19; j++) {
@@ -122,7 +124,7 @@
         figure = figures[randomF];
         for (let i = 0; i < figure.length; i++) {
           for (let j = 0; j < figure[1].length; j++) {
-            if (figure[i][j] !== 0 && fieldClone[i + posX][j + posY] == 1) {
+            if (figure[i][j] !== 0 && fieldClone[i + posX][j + posY] > 0) {
               numElem -= 1;
               endGames(endEnd);
             }
@@ -149,43 +151,7 @@
             }
           }
         }
-
-        function lowSpeedDown(down) {
-          if (stop) return;
-          setTimeout(down, 300);
-        }
-
-        function down() {
-          if (stop) return;
-          posY += 1;
-          console.log(posY);
-          for (let i = 0; i < figure.length; i++) {
-            for (let j = 0; j < figure[i].length; j++) {
-              let crash =
-                figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0;
-              if (crash) {
-                for (let i = 0; i < figure.length; i++) {
-                  for (let j = 0; j < figure[i].length; j++) {
-                    if (figure[i][j] !== 0)
-                      fieldClone[posX + i][posY - 1 + j] = figure[i][j];
-                  }
-                }
-                deletedLine(fieldClone);
-                console.table(fieldClone);
-                posX = 4;
-                posY = -1;
-                numElem += 1;
-                document.getElementById("numElem").innerHTML = numElem;
-                start();
-                return false;
-              }
-            }
-          }
-          updating();
-          drowing(posX, posY);
-          lowSpeedDown(down);
-        }
-        lowSpeedDown(down);
+        lowSpeedDown(lowDown);
       }
 
       function field() {
@@ -205,6 +171,8 @@
         if (event.keyCode == 38) posTurn(); //поворот фигуры
         if (event.keyCode == 40) highSpeedDown(speedDown); //падение фигуры
         if (event.keyCode == 27) endGames(endEnd); //конец игры
+        if (event.keyCode == 32) pauseGame(3000); //пауза
+        //if (event.keyCode !== 0) sleep = true; //пауза
       });
 
       function endGames(endEnd) {
@@ -234,10 +202,10 @@
 
       function posLeft(posY) {
         let leftX;
-        label: for (let j = 0; j < figure[1].length; j++) {
-          for (let i = 0; i < figure.length; i++) {
-            if (figure[i][j] !== 0) {
-              leftX = i;
+        label: for (let i = 0; i < figure.length; i++) {
+          for (let j = 0; j < figure[i].length; j++) {
+            if (figure[i][j] > 0) { 
+              leftX = j;
               continue label;
             }
           }
@@ -260,6 +228,43 @@
         if (posX < fieldClone.length - rightX - 1) posX += 1;
         updating();
         drowing(posX, posY);
+      }
+
+      function lowSpeedDown(lowDown) {
+        if (stop) return;
+        setTimeout(lowDown, startSpeed);
+      }
+
+      function lowDown() {
+        if (stop) return;
+        posY += 1;
+        console.log(startSpeed);
+        console.log(posY);
+        for (let i = 0; i < figure.length; i++) {
+          for (let j = 0; j < figure[i].length; j++) {
+            let crash =
+              figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0;
+            if (crash) {
+              for (let i = 0; i < figure.length; i++) {
+                for (let j = 0; j < figure[i].length; j++) {
+                  if (figure[i][j] !== 0)
+                    fieldClone[posX + i][posY - 1 + j] = figure[i][j];
+                }
+              }
+              deletedLine(fieldClone);
+              console.table(fieldClone);
+              posX = 4;
+              posY = -1;
+              numElem += 1;
+              document.getElementById("numElem").innerHTML = numElem;
+              start();
+              return false;
+            }
+          }
+        }
+        updating();
+        drowing(posX, posY);
+        lowSpeedDown(lowDown);
       }
 
       function highSpeedDown(speedDown) {
@@ -402,6 +407,26 @@
             }
           }
         }
+      }
+
+      function pauseGame(ms) {
+        sleep = !sleep;
+        console.log(sleep);
+        let date;
+          let currentDate;
+        sleepGame(ms);
+
+        //const date = Date.now();
+        function sleepGame(ms) {
+          date = Date.now();
+          currentDate = null;
+          do {
+            currentDate = Date.now();
+            //if (sleep) break;
+          } while (currentDate - date < ms);
+        }
+           console.log(sleep);
+        if (sleep) sleepGame();
       }
     </script>
   </body>
