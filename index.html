@@ -96,24 +96,16 @@
       let sleep = true; //пауза в игре
       let endG; //заставка конца игры
       let fieldClone = []; //массив поля игры
-      let ms; //длина паузы
+      let ms = []; //длина паузы
       field();
       clear();
-
-      function clear() {
-        for (let i = 0; i <= 9; i++) {
-          fieldClone[i] = [];
-          for (let j = 0; j <= 19; j++) {
-            fieldClone[i][j] = 0;
-            fieldGame.rows[j].cells[i].style.backgroundColor = "#BBBBBB";
-          }
-        }
-      }
+      let date1, date2, date3, date;
 
       function preStart() {
         numElem = 0;
         document.getElementById("numElem").innerHTML = numElem;
         stop = false;
+        clear();
         start();
       }
 
@@ -153,54 +145,17 @@
             }
           }
         }
-        lowSpeedDown(lowDown);
-      }
-
-      function field() {
-        for (let y = 1; y <= 20; y++) {
-          let row = "<tr>";
-          for (let x = 1; x <= 10; x++) {
-            row += '<td class="cage">';
-          }
-          row += "</tr>";
-          fieldGame.innerHTML += row;
-        }
+        lowSpeedDown();
       }
 
       document.addEventListener("keydown", function (event) {
         if (event.keyCode == 37) posLeft(posY); //сдвиг влево
         if (event.keyCode == 39) posRight(posY); //сдвиг вправо
         if (event.keyCode == 38) posTurn(); //поворот фигуры
-        if (event.keyCode == 40) highSpeedDown(speedDown); //падение фигуры
+        if (event.keyCode == 40) startSpeed = 20; //падение фигуры
         if (event.keyCode == 27) endGames(endEnd); //конец игры
         if (event.keyCode == 32) pauseGame(3000); //пауза
-        //if (event.keyCode !== 0) sleep = true; //пауза
       });
-
-      function endGames(endEnd) {
-        endG = document.getElementById("endGame");
-        if (rec < numElem) rec = numElem;
-        document.getElementById("rec1").innerHTML = rec;
-        clear();
-        stop = true;
-        endG.style.visibility = "visible";
-        setTimeout(endEnd, 3000);
-      }
-
-      function endEnd() {
-        if (rec < numElem) rec = numElem;
-        document.getElementById("rec").innerHTML = rec;
-        endG.style.visibility = "hidden";
-        numElem = 0;
-        document.getElementById("numElem").innerHTML = numElem;
-        for (let i = 0; i <= 9; i++) {
-          fieldClone[i] = [];
-          for (let j = 0; j <= 19; j++) {
-            fieldClone[i][j] = 0;
-            fieldGame.rows[j].cells[i].style.backgroundColor = "#BBBBBB";
-          }
-        }
-      }
 
       function posLeft(posY) {
         let leftX;
@@ -232,79 +187,6 @@
         drowing(posX, posY);
       }
 
-      function lowSpeedDown(lowDown) {
-        if (stop) return;
-        setTimeout(lowDown, startSpeed);
-      }
-
-      function lowDown() {
-        if (stop) return;
-        posY += 1;
-        console.log(startSpeed);
-        console.log(posY);
-        for (let i = 0; i < figure.length; i++) {
-          for (let j = 0; j < figure[i].length; j++) {
-            let crash =
-              figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0;
-            if (crash) {
-              for (let i = 0; i < figure.length; i++) {
-                for (let j = 0; j < figure[i].length; j++) {
-                  if (figure[i][j] !== 0)
-                    fieldClone[posX + i][posY - 1 + j] = figure[i][j];
-                }
-              }
-              deletedLine(fieldClone);
-              console.table(fieldClone);
-              posX = 4;
-              posY = -1;
-              numElem += 1;
-              document.getElementById("numElem").innerHTML = numElem;
-              start();
-              return false;
-            }
-          }
-        }
-        updating();
-        drowing(posX, posY);
-        lowSpeedDown(lowDown);
-      }
-
-      function highSpeedDown(speedDown) {
-        if (stop) return;
-        setTimeout(speedDown, 0);
-      }
-
-      function speedDown() {
-        if (stop) return;
-        posY += 1;
-        console.log(posY);
-        for (let i = 0; i < figure.length; i++) {
-          for (let j = 0; j < figure[i].length; j++) {
-            let crash =
-              figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0;
-            if (crash) {
-              for (let i = 0; i < figure.length; i++) {
-                for (let j = 0; j < figure[i].length; j++) {
-                  if (figure[i][j] !== 0)
-                    fieldClone[posX + i][posY - 1 + j] = figure[i][j];
-                }
-              }
-              deletedLine(fieldClone);
-              console.table(fieldClone);
-              posX = 4;
-              posY = -1;
-              numElem += 1;
-              document.getElementById("numElem").innerHTML = numElem;
-              start();
-              return false;
-            }
-          }
-        }
-        updating();
-        drowing(posX, posY);
-        highSpeedDown(speedDown);
-      }
-
       function posTurn() {
         let turnT = [];
         for (let i = 0; i < figure.length; i++) {
@@ -316,6 +198,93 @@
         }
         figure = turnT;
         return figure;
+      }
+
+      function lowSpeedDown() {
+        if (stop) return;
+        setTimeout(function lowDown() {
+        if (stop) return;
+        ms[posY] = Date.now();
+       // console.log(ms);
+        posY += 1;
+        for (let i = 0; i < figure.length; i++) {
+          for (let j = 0; j < figure[i].length; j++) {
+            let crash =
+              figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0;
+            if (crash) {
+              for (let i = 0; i < figure.length; i++) {
+                for (let j = 0; j < figure[i].length; j++) {
+                  if (figure[i][j] !== 0)
+                    fieldClone[posX + i][posY - 1 + j] = figure[i][j];
+                }
+              }
+              deletedLine(fieldClone);
+              numElem += 1;
+              document.getElementById("numElem").innerHTML = numElem;
+              startSpeed = 500;
+              start();
+              return false;
+            }
+          }
+        }
+        updating();
+        drowing(posX, posY);
+        lowSpeedDown();
+        date1 = +ms[posY - 2];
+        date2 = +ms[posY - 1];
+        console.log(date2-date1);
+      }, startSpeed);
+      }
+
+      //function highSpeedDown(speedDown) {
+      //  if (stop) return;
+      //  //setTimeout(speedDown, 0);
+      //  speedDown();
+      //}
+
+      //function speedDown() {
+      //  if (stop) return;
+      //  posY += 1;
+      //  for (let i = 0; i < figure.length; i++) {
+      //    for (let j = 0; j < figure[i].length; j++) {
+      //      let crash =
+      //        figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0;
+      //      if (crash) {
+      //        for (let i = 0; i < figure.length; i++) {
+      //          for (let j = 0; j < figure[i].length; j++) {
+      //            if (figure[i][j] !== 0)
+      //              fieldClone[posX + i][posY - 1 + j] = figure[i][j];
+      //          }
+      //        }
+      //        deletedLine(fieldClone);
+      //        numElem += 1;
+      //        document.getElementById("numElem").innerHTML = numElem;
+      //        start();
+      //        return false;
+      //      }
+      //    }
+      //  }
+      //  updating();
+      //  drowing(posX, posY);
+      //  highSpeedDown(speedDown);
+      //}
+
+      function endGames(endEnd) {
+        endG = document.getElementById("endGame");
+        if (rec < numElem) rec = numElem;
+        document.getElementById("rec1").innerHTML = rec;
+        stop = true;
+        endG.style.visibility = "visible";
+        setTimeout(endEnd, 3000);
+      }
+
+      function endEnd() {
+        if (rec < numElem) rec = numElem;
+        document.getElementById("rec").innerHTML = rec;
+        endG.style.visibility = "hidden";
+        numElem = 0;
+        document.getElementById("numElem").innerHTML = numElem;
+        clear();
       }
 
       function deletedLine(fieldClone) {
@@ -348,10 +317,6 @@
             if (fieldClone[i][j] == 0) {
               fieldGame.rows[j].cells[i].style.backgroundColor = "#BBBBBB";
             }
-          }
-        }
-        for (let i = 0; i <= 9; i++) {
-          for (let j = 0; j <= 19; j++) {
             if (fieldClone[i][j] == 1) {
               fieldGame.rows[j].cells[i].style.backgroundColor = "#FF0000";
             }
@@ -430,6 +395,27 @@
         }
         console.log(sleep);
         if (sleep) sleepGame();
+      }
+
+      function clear() {
+        for (let i = 0; i <= 9; i++) {
+          fieldClone[i] = [];
+          for (let j = 0; j <= 19; j++) {
+            fieldClone[i][j] = 0;
+            fieldGame.rows[j].cells[i].style.backgroundColor = "#BBBBBB";
+          }
+        }
+      }
+
+      function field() {
+        for (let y = 1; y <= 20; y++) {
+          let row = "<tr>";
+          for (let x = 1; x <= 10; x++) {
+            row += '<td class="cage">';
+          }
+          row += "</tr>";
+          fieldGame.innerHTML += row;
+        }
       }
     </script>
   </body>
