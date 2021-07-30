@@ -122,6 +122,8 @@
         //установка фигуры ------------------------------------------
         randomF = Math.floor(Math.random() * figures.length);
         figure = figures[randomF];
+        posX = 4;
+        posY = 0;
         for (let i = 0; i < figure.length; i++) {
           for (let j = 0; j < figure[1].length; j++) {
             if (figure[i][j] !== 0 && fieldClone[i + posX][j + posY] > 0) {
@@ -204,9 +206,9 @@
         let leftX;
         label: for (let i = 0; i < figure.length; i++) {
           for (let j = 0; j < figure[i].length; j++) {
-            if (figure[i][j] > 0) { 
-              leftX = j;
-              continue label;
+            if (figure[i][j] > 0) {
+              leftX = i;
+              break label;
             }
           }
         }
@@ -309,6 +311,7 @@
           turnT[i] = [];
           for (let j = 0; j < figure[i].length; j++) {
             turnT[i][j] = figure[j][figure[i].length - 1 - i];
+            if (fieldClone[i + posX][j + posY] == undefined) return;
           }
         }
         figure = turnT;
@@ -413,7 +416,7 @@
         sleep = !sleep;
         console.log(sleep);
         let date;
-          let currentDate;
+        let currentDate;
         sleepGame(ms);
 
         //const date = Date.now();
@@ -425,7 +428,7 @@
             //if (sleep) break;
           } while (currentDate - date < ms);
         }
-           console.log(sleep);
+        console.log(sleep);
         if (sleep) sleepGame();
       }
     </script>
