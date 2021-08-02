@@ -115,17 +115,44 @@ body {
     margin-top: 250px;
     visibility: hidden;
 }
-#pause {
+#startGame {
     position: fixed;
-    width: 300px;
+    width: 680px;
     height: auto;
-    font-size: 60px;
+    font-size: 50px;
     text-align: center;
     padding-top: 20px;
     color: #FF0000;
     background-color: #BBBBBB;
     border: 3px solid #FF0000;
     border-radius: 10px;
-    margin-top: 50px;
+    margin-top: 250px;
     visibility: hidden;
+}
+#speedGame {
+    font-size: 50px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    text-align: center;
+    color: #FF0000;
+    background-color: #BBBBBB;
+    border: 3px solid #FF0000;
+    border-radius: 8px;
+    width: 85px;
+}
+.startbutton {
+    font-size: 50px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    text-align: center;
+    color: #FF0000;
+    background-color: #BBBBBB;
+    border: 3px solid #FF0000;
+    border-radius: 8px;
+    width: 250px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+.startbutton:hover {
+    background-color: #888888;
 }

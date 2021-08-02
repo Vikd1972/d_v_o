@@ -33,13 +33,34 @@
           </div>
         </div>
       </div>
-      <div class="startgame" onclick="preStart();">Начать новую игру</div>
+      <div class="startgame" onclick="startG.style.visibility='visible';">
+        Начать новую игру
+      </div>
+      <div id="startGame">
+        Укажите начальную скорость
+        <div>
+          <form name="my" tabindex="1">
+            <label for="speedGame">(от 1 до 10):</label>
+            <input
+              type="number"
+              id="speedGame"
+              name="speedGame"
+              value="speedGame"
+              min="1"
+              max="10"
+              value="1"
+            />
+          </form>
+        </div>
+        <button class="startbutton" type="submit" onclick="preStart();">
+          Поехали
+        </button>
+      </div>
       <div id="endGame">
         Игра закончена
         <div>Ваш рекорд:</div>
         <div id="rec1"></div>
       </div>
-      <div id="pause">Пауза</div>
     </div>
     <script>
       "use strict";
@@ -82,46 +103,51 @@
       let figures = [I, J, L, O, S, Z, T];
       let randomF; //случайный элемент из массива фигур
       let figure; //текущая фигура
-      let startSpeed = 500; //начальная скорость
+      let speed; //скорость падения, ms
+      let speedGame = 1; //начальная скорость пользователя
       let rec = 0; //рекорд игры
-      document.getElementById("rec").innerHTML = rec;
       let numElem = 0; //номер элемента
-      document.getElementById("numElem").innerHTML = numElem;
-      let speed = 10; //скорость
-      document.getElementById("speed").innerHTML = speed;
-      let fieldGame = document.getElementById("fieldGame");
       let posX = 4; //начальное положение фигуры / сдвиг фигуры
       let posY = 0; //начальное положение фигуры / сдвиг фигуры
       let stop = false; //признак остановки игры
-      let closeWinwow = false; //пауза в игре
-      let endG; //заставка конца игры
+      let closeWindow = false; //признак скрытия поля окончания игры
       let fieldClone = []; //массив поля игры
-      let ms = []; //длина паузы
+      let fieldGame = document.getElementById("fieldGame");
+      let startG = document.getElementById("startGame");
+      let endG = document.getElementById("endGame");
+      document.getElementById("rec").innerHTML = rec;
+      document.getElementById("numElem").innerHTML = numElem;
+      document.getElementById("speed").innerHTML = speedGame;
       field();
       clear();
-      let date1, date2, date3, date;
 
       function preStart() {
+        let form = document.forms.my;
+        let speedG = form.elements.speedGame;
+        //document.getElementById("speedGame").focus();
+        speedGame = +speedG.value;
+        document.getElementById("speed").innerHTML = speedGame;
         numElem = 0;
         document.getElementById("numElem").innerHTML = numElem;
         stop = false;
-        closeWinwow = false;
+        startG.style.visibility = "hidden";
+        speed = 600 - speedGame * 50;
         clear();
         start();
       }
 
       function start() {
         if (stop) return;
-        //установка фигуры ------------------------------------------
         randomF = Math.floor(Math.random() * figures.length);
         figure = figures[randomF];
         posX = 4;
         posY = 0;
         for (let i = 0; i < figure.length; i++) {
           for (let j = 0; j < figure[1].length; j++) {
-            if (figure[i][j] !== 0 && fieldClone[i + posX][j + posY] > 0) {
+            if (figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0) {
               numElem -= 1;
-              endGames(endEnd);
+              closeWindow = false;
+              endGames();
             }
             if (figure[i][j] == 1) {
               fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#FF0000";
@@ -153,8 +179,9 @@
         if (event.keyCode == 37) posLeft(posY); //сдвиг влево
         if (event.keyCode == 39) posRight(posY); //сдвиг вправо
         if (event.keyCode == 38) posTurn(); //поворот фигуры
-        if (event.keyCode == 40) startSpeed = 20; //падение фигуры
-        if (event.keyCode == 27) endGames(endEnd); //конец игры
+        if (event.keyCode == 40) speed = 20; //падение фигуры
+        if (event.keyCode == 27) endGames(); //конец игры
+        // if (event.keyCode == 13) preStart(); //конец игры
       });
 
       function posLeft(posY) {
@@ -204,8 +231,6 @@
         if (stop) return;
         setTimeout(function lowDown() {
           if (stop) return;
-          ms[posY] = Date.now();
-          // console.log(ms);
           posY += 1;
           for (let i = 0; i < figure.length; i++) {
             for (let j = 0; j < figure[i].length; j++) {
@@ -221,7 +246,11 @@
                 deletedLine(fieldClone);
                 numElem += 1;
                 document.getElementById("numElem").innerHTML = numElem;
-                startSpeed = 500;
+                // увелтчение скорости каждые 10 элементов
+                if (numElem % 10 == 0) speedGame += 1;
+                if (speedGame >= 10) speedGame = 10;
+                document.getElementById("speed").innerHTML = speedGame;
+                speed = 600 - speedGame * 50;
                 start();
                 return false;
               }
@@ -230,83 +259,41 @@
           updating();
           drowing(posX, posY);
           lowSpeedDown();
-          date1 = +ms[posY - 2];
-          date2 = +ms[posY - 1];
-          console.log(date2 - date1);
-        }, startSpeed);
+        }, speed);
       }
 
-      //function highSpeedDown(speedDown) {
-      //  if (stop) return;
-      //  //setTimeout(speedDown, 0);
-      //  speedDown();
-      //}
-
-      //function speedDown() {
-      //  if (stop) return;
-      //  posY += 1;
-      //  for (let i = 0; i < figure.length; i++) {
-      //    for (let j = 0; j < figure[i].length; j++) {
-      //      let crash =
-      //        figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0;
-      //      if (crash) {
-      //        for (let i = 0; i < figure.length; i++) {
-      //          for (let j = 0; j < figure[i].length; j++) {
-      //            if (figure[i][j] !== 0)
-      //              fieldClone[posX + i][posY - 1 + j] = figure[i][j];
-      //          }
-      //        }
-      //        deletedLine(fieldClone);
-      //        numElem += 1;
-      //        document.getElementById("numElem").innerHTML = numElem;
-      //        start();
-      //        return false;
-      //      }
-      //    }
-      //  }
-      //  updating();
-      //  drowing(posX, posY);
-      //  highSpeedDown(speedDown);
-      //}
-
-      function endGames(endEnd) {
-        endG = document.getElementById("endGame");
+      function endGames() {
         if (rec < numElem) rec = numElem;
         document.getElementById("rec1").innerHTML = rec;
+        document.getElementById("rec").innerHTML = rec;
         stop = true;
         endG.style.visibility = "visible";
-        endEnd();
-      }
-
-      function endEnd() {
-        if (rec < numElem) rec = numElem;
-        document.getElementById("rec").innerHTML = rec;
-        if (closeWinwow) {
+        if (closeWindow) {
           endG.style.visibility = "hidden";
           clear();
         }
-        closeWinwow = true;
+        closeWindow = true;
         numElem = 0;
         document.getElementById("numElem").innerHTML = numElem;
       }
 
       function deletedLine(fieldClone) {
-        label1: for (let j = 19; j >= 0; j--) {
+        label1: for (let j = 19; j >= 0; ) {
           let line;
           for (let i = 0; i <= 9; i++) {
             if (fieldClone[i][j] == 0) {
+              j--;
               continue label1;
             } else {
               line = j;
             }
           }
-          console.log("++++++++++++++++++++++++++++++");
-          for (let j = line; j >= 19 - line - 1; j--) {
+          for (let y = line; y > 0; y--) {
             for (let i = 0; i <= 9; i++) {
-              if (fieldClone[i][j - 1] == undefined) {
-                fieldClone[i][j - 1] = 0;
+              if (fieldClone[i][y - 1] == undefined) {
+                fieldClone[i][y - 1] = 0;
               }
-              fieldClone[i][j] = fieldClone[i][j - 1];
+              fieldClone[i][y] = fieldClone[i][y - 1];
             }
           }
         }
