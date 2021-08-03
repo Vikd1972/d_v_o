@@ -1,158 +1,167 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    background-color: #BBBBBB;
-    font-size: 25px;
-    font-weight: bold;
+  background-color: #bbbbbb;
+  font-size: 25px;
+  font-weight: bold;
 }
-#game {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.tetris {
-    color: #FFFFFF;
-    font-size: 48px;
-    margin-bottom: 20px;
+.game__title {
+  color: #ffffff;
+  font-size: 48px;
+  margin-bottom: 20px;
 }
 .field {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
-.fieldleft {
-    width: auto;
-    height: auto;
-    margin-right: 30px;
-    
+.field__left {
+  width: auto;
+  height: auto;
+  margin-right: 30px;
 }
 #fieldGame {
-    margin-right: 20px;
-    padding: 5px;
-    background-color: rgb(224, 95, 20);
-    border-radius: 7px;
+  margin-right: 20px;
+  padding: 5px;
+  background-color: rgb(224, 95, 20);
+  border-radius: 7px;
 }
-.cage {
-    width: 30px;
-    height: 30px;
-    border: 1px solid black;
-    border-radius: 4px;
-    background-color: #BBBBBB;
+.field__left-cage {
+  width: 30px;
+  height: 30px;
+  border: 1px solid black;
+  border-radius: 4px;
+  background-color: #bbbbbb;
 }
-.fieldright {
-    width: 332px;
-    height: 652px;
-    border: 7px;
-    border-color: rgb(224, 95, 20);
-    border-radius: 7px;
-    border-style: solid;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}   
-.rules {
-    text-align: center;
-    margin-bottom: 30px;
+.field__right {
+  width: 332px;
+  height: 652px;
+  border: 7px;
+  border-color: rgb(224, 95, 20);
+  border-radius: 7px;
+  border-style: solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
-.rec {
-    margin-bottom: 15px;
+.field__rules {
+  text-align: center;
+  margin-bottom: 55px;
+}
+.field__rules-title {
+  margin-bottom: 20px;
+  font-size: 30px;
+}
+
+.field__points-rec {
+  margin-bottom: 15px;
+  font-size: 30px;
 }
 #rec {
-    font-size: 52px;
-    color: #FF0000;
-    margin-bottom: 20px;
-    z-index: 500;
+  font-size: 52px;
+  color: #ff0000;
+  margin-bottom: 20px;
+  z-index: 500;
 }
 #rec1 {
-    font-size: 80px;
-    color: #FF0000;
-    margin-bottom: 20px;
-    z-index: 500;
+  font-size: 80px;
+  color: #ff0000;
+  margin-bottom: 20px;
+  z-index: 500;
 }
 
-.numelem {
-    margin-bottom: 15px;
+.field__points-numelem {
+  margin-bottom: 15px;
+  font-size: 30px;
 }
 #numElem {
-    font-size: 52px;
-    color: #FF0000;
-    margin-bottom: 20px;
+  font-size: 52px;
+  color: #ff0000;
+  margin-bottom: 20px;
 }
 
-.speed {
-    margin-bottom: 15px;
+.field__points-speed {
+  font-size: 30px;
+  margin-bottom: 15px;
 }
 #speed {
-    font-size: 52px;
-    color: #FF0000;
-    margin-bottom: 20px;
+  font-size: 52px;
+  color: #ff0000;
+  margin-bottom: 20px;
 }
 .startgame {
-    margin-top: 20px;
-    width: 332px;
-    height: 60px;
-    color: #FFFFFF;
-    background-color: #555555;
-    text-align: center;
-    padding: 15px;
-    cursor: pointer;
+  margin-top: 17px;
+  font-size: 25px;
+  font-family: "Times New Roman", Times, serif;
+  width: 332px;
+  height: 60px;
+  color: #ffffff;
+  background-color: #555555;
+  text-align: center;
+  padding: 13px;
+  cursor: pointer;
 }
 #endGame {
-    position: fixed;
-    width: 680px;
-    height: auto;
-    font-size: 70px;
-    text-align: center;
-    padding-top: 20px;
-    color: #FF0000;
-    background-color: #BBBBBB;
-    border: 3px solid #FF0000;
-    border-radius: 10px;
-    margin-top: 250px;
-    visibility: hidden;
+  position: fixed;
+  width: 680px;
+  height: auto;
+  font-size: 70px;
+  text-align: center;
+  padding-top: 20px;
+  color: #ff0000;
+  background-color: #bbbbbb;
+  border: 3px solid #ff0000;
+  border-radius: 10px;
+  margin-top: 250px;
+  visibility: hidden;
 }
 #startGame {
-    position: fixed;
-    width: 680px;
-    height: auto;
-    font-size: 50px;
-    text-align: center;
-    padding-top: 20px;
-    color: #FF0000;
-    background-color: #BBBBBB;
-    border: 3px solid #FF0000;
-    border-radius: 10px;
-    margin-top: 250px;
-    visibility: hidden;
+  position: fixed;
+  width: 680px;
+  height: auto;
+  font-size: 50px;
+  text-align: center;
+  padding-top: 20px;
+  color: #ff0000;
+  background-color: #bbbbbb;
+  border: 3px solid #ff0000;
+  border-radius: 10px;
+  margin-top: 250px;
+  visibility: hidden;
 }
 #speedGame {
-    font-size: 50px;
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: bold;
-    text-align: center;
-    color: #FF0000;
-    background-color: #BBBBBB;
-    border: 3px solid #FF0000;
-    border-radius: 8px;
-    width: 85px;
+  font-size: 50px;
+  font-family: "Times New Roman", Times, serif;
+  font-weight: bold;
+  text-align: center;
+  color: #ff0000;
+  background-color: #bbbbbb;
+  border: 3px solid #ff0000;
+  border-radius: 8px;
+  width: 85px;
 }
 .startbutton {
-    font-size: 50px;
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: bold;
-    text-align: center;
-    color: #FF0000;
-    background-color: #BBBBBB;
-    border: 3px solid #FF0000;
-    border-radius: 8px;
-    width: 250px;
-    margin-top: 20px;
-    margin-bottom: 30px;
+  font-size: 50px;
+  font-family: "Times New Roman", Times, serif;
+  font-weight: bold;
+  text-align: center;
+  color: #ff0000;
+  background-color: #bbbbbb;
+  border: 3px solid #ff0000;
+  border-radius: 8px;
+  width: 250px;
+  margin-top: 20px;
+  margin-bottom: 30px;
 }
 .startbutton:hover {
-    background-color: #888888;
+  background-color: #888888;
 }

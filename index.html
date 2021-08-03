@@ -7,54 +7,56 @@
   </head>
 
   <body>
-    <div id="game">
-      <div class="tetris">T E T R I S</div>
+    <div class="game">
+      <div class="game__title">T E T R I S</div>
       <div class="field">
-        <div class="fieldleft">
+        <div class="field__left">
           <table id="fieldGame"></table>
         </div>
-        <div class="fieldright">
-          <div class="rules">
-            <div style="margin-bottom: 20px">Правила игры</div>
+        <div class="field__right">
+          <div class="field__rules">
+            <div class="field__rules-title">Правила игры</div>
             <div>&uarr; - поворот фигуры</div>
             <div>&larr; - сдвиг влево</div>
             <div>&rarr; - сдвиг вправо</div>
             <div>&darr; - уронить фигуру</div>
             <div>'Esc' - прекратить игру</div>
-            <div>'Spacebar' - пауза</div>
           </div>
-          <div class="points">
-            <div class="rec">Ваш рекорд:</div>
+          <div class="field__points">
+            <div class="field__points-rec">Ваш рекорд:</div>
             <div id="rec"></div>
-            <div class="numelem">Блок в игре</div>
+            <div class="field__points-numelem">Блок в игре</div>
             <div id="numElem"></div>
-            <div class="speed">текущая скорость</div>
+            <div class="field__points-speed">Текущая скорость</div>
             <div id="speed"></div>
           </div>
         </div>
       </div>
-      <div class="startgame" onclick="startG.style.visibility='visible';">
+      <button
+        class="startgame"
+        onclick="startGameScreen.style.visibility='visible';"
+      >
         Начать новую игру
-      </div>
+      </button>
       <div id="startGame">
         Укажите начальную скорость
         <div>
-          <form name="my" tabindex="1">
+          <form name="my" onsubmit="gamePreparation(); return false">
             <label for="speedGame">(от 1 до 10):</label>
             <input
               type="number"
               id="speedGame"
               name="speedGame"
-              value="speedGame"
+              value=" " autofocus
               min="1"
               max="10"
               value="1"
+              tabindex="1" 
             />
+            <br />
+            <button class="startbutton" type="submit">Поехали</button>
           </form>
         </div>
-        <button class="startbutton" type="submit" onclick="preStart();">
-          Поехали
-        </button>
       </div>
       <div id="endGame">
         Игра закончена
@@ -62,329 +64,6 @@
         <div id="rec1"></div>
       </div>
     </div>
-    <script>
-      "use strict";
-
-      let I = [
-        [0, 0, 0, 0],
-        [1, 1, 1, 1],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-      ];
-      let J = [
-        [2, 0, 0],
-        [2, 2, 2],
-        [0, 0, 0],
-      ];
-      let L = [
-        [0, 0, 3],
-        [3, 3, 3],
-        [0, 0, 0],
-      ];
-      let O = [
-        [4, 4],
-        [4, 4],
-      ];
-      let S = [
-        [0, 5, 5],
-        [5, 5, 0],
-        [0, 0, 0],
-      ];
-      let Z = [
-        [6, 6, 0],
-        [0, 6, 6],
-        [0, 0, 0],
-      ];
-      let T = [
-        [0, 7, 0],
-        [7, 7, 7],
-        [0, 0, 0],
-      ];
-      let figures = [I, J, L, O, S, Z, T];
-      let randomF; //случайный элемент из массива фигур
-      let figure; //текущая фигура
-      let speed; //скорость падения, ms
-      let speedGame = 1; //начальная скорость пользователя
-      let rec = 0; //рекорд игры
-      let numElem = 0; //номер элемента
-      let posX = 4; //начальное положение фигуры / сдвиг фигуры
-      let posY = 0; //начальное положение фигуры / сдвиг фигуры
-      let stop = false; //признак остановки игры
-      let closeWindow = false; //признак скрытия поля окончания игры
-      let fieldClone = []; //массив поля игры
-      let fieldGame = document.getElementById("fieldGame");
-      let startG = document.getElementById("startGame");
-      let endG = document.getElementById("endGame");
-      document.getElementById("rec").innerHTML = rec;
-      document.getElementById("numElem").innerHTML = numElem;
-      document.getElementById("speed").innerHTML = speedGame;
-      field();
-      clear();
-
-      function preStart() {
-        let form = document.forms.my;
-        let speedG = form.elements.speedGame;
-        speedGame = +speedG.value;
-        document.getElementById("speed").innerHTML = speedGame;
-        numElem = 0;
-        document.getElementById("numElem").innerHTML = numElem;
-        stop = false;
-        startG.style.visibility = "hidden";
-        speed = 600 - speedGame * 50;
-        clear();
-        start();
-      }
-
-      function start() {
-        if (stop) return;
-        randomF = Math.floor(Math.random() * figures.length);
-        figure = figures[randomF];
-        posX = 4;
-        posY = 0;
-        for (let i = 0; i < figure.length; i++) {
-          for (let j = 0; j < figure[1].length; j++) {
-            if (figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0) {
-              numElem -= 1;
-              closeWindow = false;
-              endGames();
-            }
-            if (figure[i][j] == 1) {
-              fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#FF0000";
-            }
-            if (figure[i][j] == 2) {
-              fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#FF4500";
-            }
-            if (figure[i][j] == 3) {
-              fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#FFFF00";
-            }
-            if (figure[i][j] == 4) {
-              fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#00FF00";
-            }
-            if (figure[i][j] == 5) {
-              fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#00FFFF";
-            }
-            if (figure[i][j] == 6) {
-              fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#0000FF";
-            }
-            if (figure[i][j] == 7) {
-              fieldGame.rows[j].cells[i + 4].style.backgroundColor = "#800080";
-            }
-          }
-        }
-        lowSpeedDown();
-      }
-
-      document.addEventListener("keydown", function (event) {
-        if (event.keyCode == 37) posLeft(posY); //сдвиг влево
-        if (event.keyCode == 39) posRight(posY); //сдвиг вправо
-        if (event.keyCode == 38) posTurn(); //поворот фигуры
-        if (event.keyCode == 40) speed = 20; //падение фигуры
-        if (event.keyCode == 27) endGames(); //конец игры
-      });
-
-      function posLeft(posY) {
-        let leftX;
-        label: for (let i = 0; i < figure.length; i++) {
-          for (let j = 0; j < figure[i].length; j++) {
-            if (figure[i][j] > 0) {
-              leftX = i;
-              break label;
-            }
-          }
-        }
-        if (posX + leftX > 0) posX -= 1;
-        updating();
-        drowing(posX, posY);
-      }
-
-      function posRight(posY) {
-        let rightX;
-        label: for (let i = 0; i < figure.length; i++) {
-          for (let j = figure.length - 1; j >= 0; j--) {
-            if (figure[i][j] !== 0) {
-              rightX = i;
-              continue label;
-            }
-          }
-        }
-        if (posX < fieldClone.length - rightX - 1) posX += 1;
-        updating();
-        drowing(posX, posY);
-      }
-
-      function posTurn() {
-        let turnT = [];
-        for (let i = 0; i < figure.length; i++) {
-          turnT[i] = [];
-          for (let j = 0; j < figure[i].length; j++) {
-            turnT[i][j] = figure[j][figure[i].length - 1 - i];
-            if (fieldClone[i + posX][j + posY] == undefined) return;
-          }
-        }
-        figure = turnT;
-        return figure;
-      }
-
-      function lowSpeedDown() {
-        if (stop) return;
-        setTimeout(function lowDown() {
-          if (stop) return;
-          posY += 1;
-          for (let i = 0; i < figure.length; i++) {
-            for (let j = 0; j < figure[i].length; j++) {
-              let crash =
-                figure[i][j] !== 0 && fieldClone[i + posX][j + posY] !== 0;
-              if (crash) {
-                for (let i = 0; i < figure.length; i++) {
-                  for (let j = 0; j < figure[i].length; j++) {
-                    if (figure[i][j] !== 0)
-                      fieldClone[posX + i][posY - 1 + j] = figure[i][j];
-                  }
-                }
-                deletedLine(fieldClone);
-                numElem += 1;
-                document.getElementById("numElem").innerHTML = numElem;
-                // увеличение скорости каждые 10 элементов
-                if (numElem % 10 == 0) speedGame += 1;
-                if (speedGame >= 10) speedGame = 10;
-                document.getElementById("speed").innerHTML = speedGame;
-                speed = 600 - speedGame * 50;
-                start();
-                return false;
-              }
-            }
-          }
-          updating();
-          drowing(posX, posY);
-          lowSpeedDown();
-        }, speed);
-      }
-
-      function endGames() {
-        if (rec < numElem) rec = numElem;
-        document.getElementById("rec1").innerHTML = rec;
-        document.getElementById("rec").innerHTML = rec;
-        stop = true;
-        endG.style.visibility = "visible";
-        if (closeWindow) {
-          endG.style.visibility = "hidden";
-          clear();
-        }
-        closeWindow = true;
-        numElem = 0;
-        document.getElementById("numElem").innerHTML = numElem;
-      }
-
-      function deletedLine(fieldClone) {
-        label1: for (let j = 19; j >= 0; ) {
-          let line;
-          for (let i = 0; i <= 9; i++) {
-            if (fieldClone[i][j] == 0) {
-              j--;
-              continue label1;
-            } else {
-              line = j;
-            }
-          }
-          for (let y = line; y > 0; y--) {
-            for (let i = 0; i <= 9; i++) {
-              if (fieldClone[i][y - 1] == undefined) {
-                fieldClone[i][y - 1] = 0;
-              }
-              fieldClone[i][y] = fieldClone[i][y - 1];
-            }
-          }
-        }
-        updating();
-        return fieldClone;
-      }
-
-      function updating() {
-        for (let i = 0; i <= 9; i++) {
-          for (let j = 0; j <= 19; j++) {
-            if (fieldClone[i][j] == 0) {
-              fieldGame.rows[j].cells[i].style.backgroundColor = "#BBBBBB";
-            }
-            if (fieldClone[i][j] == 1) {
-              fieldGame.rows[j].cells[i].style.backgroundColor = "#FF0000";
-            }
-            if (fieldClone[i][j] == 2) {
-              fieldGame.rows[j].cells[i].style.backgroundColor = "#FF4500";
-            }
-            if (fieldClone[i][j] == 3) {
-              fieldGame.rows[j].cells[i].style.backgroundColor = "#FFFF00";
-            }
-            if (fieldClone[i][j] == 4) {
-              fieldGame.rows[j].cells[i].style.backgroundColor = "#00FF00";
-            }
-            if (fieldClone[i][j] == 5) {
-              fieldGame.rows[j].cells[i].style.backgroundColor = "#00FFFF";
-            }
-            if (fieldClone[i][j] == 6) {
-              fieldGame.rows[j].cells[i].style.backgroundColor = "#0000FF";
-            }
-            if (fieldClone[i][j] == 7) {
-              fieldGame.rows[j].cells[i].style.backgroundColor = "#800080";
-            }
-          }
-        }
-      }
-
-      function drowing(posX, posY) {
-        for (let i = 0; i < figure.length; i++) {
-          for (let j = 0; j < figure[i].length; j++) {
-            if (figure[i][j] == 1) {
-              fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
-                "#FF0000";
-            }
-            if (figure[i][j] == 2) {
-              fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
-                "#FF4500";
-            }
-            if (figure[i][j] == 3) {
-              fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
-                "#FFFF00";
-            }
-            if (figure[i][j] == 4) {
-              fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
-                "#00FF00";
-            }
-            if (figure[i][j] == 5) {
-              fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
-                "#00FFFF";
-            }
-            if (figure[i][j] == 6) {
-              fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
-                "#0000FF";
-            }
-            if (figure[i][j] == 7) {
-              fieldGame.rows[j + posY].cells[i + posX].style.backgroundColor =
-                "#800080";
-            }
-          }
-        }
-      }
-
-      function clear() {
-        for (let i = 0; i <= 9; i++) {
-          fieldClone[i] = [];
-          for (let j = 0; j <= 19; j++) {
-            fieldClone[i][j] = 0;
-            fieldGame.rows[j].cells[i].style.backgroundColor = "#BBBBBB";
-          }
-        }
-      }
-
-      function field() {
-        for (let y = 1; y <= 20; y++) {
-          let row = "<tr>";
-          for (let x = 1; x <= 10; x++) {
-            row += '<td class="cage">';
-          }
-          row += "</tr>";
-          fieldGame.innerHTML += row;
-        }
-      }
-    </script>
+    <script src="js/tetrisjs.js" type="text/javascript"></script>
   </body>
 </html>
