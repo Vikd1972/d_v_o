@@ -124,7 +124,6 @@
       function preStart() {
         let form = document.forms.my;
         let speedG = form.elements.speedGame;
-        //document.getElementById("speedGame").focus();
         speedGame = +speedG.value;
         document.getElementById("speed").innerHTML = speedGame;
         numElem = 0;
@@ -181,7 +180,6 @@
         if (event.keyCode == 38) posTurn(); //поворот фигуры
         if (event.keyCode == 40) speed = 20; //падение фигуры
         if (event.keyCode == 27) endGames(); //конец игры
-        // if (event.keyCode == 13) preStart(); //конец игры
       });
 
       function posLeft(posY) {
@@ -246,7 +244,7 @@
                 deletedLine(fieldClone);
                 numElem += 1;
                 document.getElementById("numElem").innerHTML = numElem;
-                // увелтчение скорости каждые 10 элементов
+                // увеличение скорости каждые 10 элементов
                 if (numElem % 10 == 0) speedGame += 1;
                 if (speedGame >= 10) speedGame = 10;
                 document.getElementById("speed").innerHTML = speedGame;
