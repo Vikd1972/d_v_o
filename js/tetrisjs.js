@@ -93,15 +93,17 @@ function posLeft(posY) {
   let leftX;
   label: for (let i = 0; i < figure.length; i++) {
     for (let j = 0; j < figure[i].length; j++) {
-    
-        if (figure[i][j] !== 0) {
+      if (figure[i][j] !== 0) {
         leftX = i;
         break label;
       }
     }
   }
-        if (posX + leftX > 0 && checkPossibility()) posX -= 1;
-     //if (!checkPossibility()) return false;
+  if (posX + leftX > 0 && checkPossibility()) posX -= 1;
+  if (!checkPossibility()) {
+    posX += 1;
+    return false;
+  }
   updating();
   drowing(posX, posY);
 }
@@ -118,6 +120,10 @@ function posRight(posY) {
     }
   }
   if (posX < fieldClone.length - rightX - 1) posX += 1;
+  if (!checkPossibility()) {
+    posX -= 1;
+    return false;
+  }
   updating();
   drowing(posX, posY);
 }
